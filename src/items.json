@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Banana",
+        "price": 10,
+        "img": "https://www.lovemysalad.com/sites/default/files/styles/image_530x397/public/banaan-large.jpg?itok=dZxH6D_w"
+    },
+    {
+        "name": "Apple",
+        "price": 8,
+        "img": "https://ezsai.com/wp-content/uploads/2021/02/firefox_2018-07-10_07-50-11.png"
+    },
+    {
+        "name": "Papaya",
+        "price": 10,
+        "img": "https://sudhaventures.com/wp-content/uploads/2021/07/Papaya.jpg"
+    }
+]
