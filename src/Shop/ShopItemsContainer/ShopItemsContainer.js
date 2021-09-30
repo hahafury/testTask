@@ -3,10 +3,6 @@ import ShopItem from '../ShopItem/ShopItem.js';
 import styles from './ShopItemsContainer.module.sass';
 
 const ItemsContainer = (props) => {
-    useEffect(() =>{
-        
-    })
-
     return (
         <div className = {styles.itemsContainer}>
             {props.itemsList.map((e,i) => {
