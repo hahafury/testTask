@@ -12,6 +12,10 @@
     {
         "name": "Papaya",
         "price": 10,
-        "img": "https://sudhaventures.com/wp-content/uploads/2021/07/Papaya.jpg"
+        "img": "https://sudhaventures.com/wp-content/uploads/2021/07/Papaya.jpg",
+        "discount" : {
+            "value": 25,
+            "perKg": 3
+        }
     }
 ]

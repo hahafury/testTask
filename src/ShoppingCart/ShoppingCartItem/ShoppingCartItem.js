@@ -4,16 +4,6 @@ import json from '../../items.json'
 
 const ShoppingCartItem = (props) => {
     const [isDeleted, setIsDeleted] = useState(false)
-    const handleDeleteFromShippingCart = (name) => {
-        const shoppingCart = JSON.parse(localStorage.getItem('shopping_cart'))
-        for(let i = 0; i <= shoppingCart.length - 1 ; i++){
-            if(shoppingCart[i].name === name) {
-                shoppingCart.splice(i,1)
-            }
-        }
-        setIsDeleted(true)
-        localStorage.setItem('shopping_cart', JSON.stringify(shoppingCart))
-    }
 
     const renderImg = (itemName) => {
         let img
@@ -23,6 +13,11 @@ const ShoppingCartItem = (props) => {
             }
         }
         return <img src={img} alt = "item img"/>
+    }
+
+    const handleDeleteItem = (name) => {
+        setIsDeleted(true)
+        props.handleDelete(name)
     }
 
     return (
@@ -36,7 +31,7 @@ const ShoppingCartItem = (props) => {
                     <div className = {styles.itemName}>{props.name}</div>
                     <div className = {styles.itemAmount}>Amount: <strong>{props.amount} kg</strong></div>
                     <div className = {styles.itemSum}>Total cost: <strong>&#36; {props.sum}</strong></div>
-                    <button className = {styles.deleteItemButton} onClick={() => handleDeleteFromShippingCart(props.name)}>Delete from shopping cart</button>
+                    <button className = {styles.deleteItemButton} onClick={() => handleDeleteItem(props.name)}>Delete from shopping cart</button>
                 </div>
             ) :(
                 false

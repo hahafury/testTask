@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import styles from './ShopItem.module.sass';
 import CONSTANTS from '../../constants'
 
@@ -6,10 +6,6 @@ const ShopItem = (props) => {
     const [amount, setAmount] = useState(0.25)
 
     const inputValue = useRef()
-
-    useEffect(() => {
-        inputValue.current.value = amount;
-    },[amount])
 
     const handleChangeAmountValue = (action) => {
         switch (action) {
@@ -28,7 +24,7 @@ const ShopItem = (props) => {
         }
     }
 
-    const buyItem = (name, price, amount) => {
+    const buyItem = (name, price, amount, discount) => {
         const shoppingCart = JSON.parse(localStorage.getItem('shopping_cart'));
         if(amount <= 0){
             return alert('Amount must be greater than zero')
@@ -38,6 +34,7 @@ const ShopItem = (props) => {
             price: price,
             amount: amount,
         };
+        if(discount) item.discount = discount;
         setItemInShoppingCart(shoppingCart, item)
     }
 
@@ -52,6 +49,7 @@ const ShopItem = (props) => {
     };
 
     const setItemInShoppingCart = (shoppingCart, data) => {
+        
         if(shoppingCart === null) {
             localStorage.setItem('shopping_cart', JSON.stringify([{
                 name: data.name,
@@ -66,7 +64,8 @@ const ShopItem = (props) => {
                     shoppingCart[i].sum = checkDiscount({
                         name: shoppingCart[i].name,
                         amount: shoppingCart[i].amount,
-                        price: data.price
+                        price: data.price,
+                        discount: data.discount
                     })
                 }
             }
@@ -82,23 +81,16 @@ const ShopItem = (props) => {
     }
 
     const checkDiscount = (data) => {
-        let sum;
-        switch(data.name) {
-            case 'Papaya': {
-                sum = ((data.amount % 3)*data.price) + ((data.amount - (data.amount % 3)) * 25/3)
-                break
-            }
-            default: {
-                sum = data.amount * data.price
-                break
-            }
+        if (data.discount){
+            return (
+                (data.amount % data.discount.perKg)*data.price)
+                + ((data.amount - (data.amount % data.discount.perKg)) 
+                * data.discount.value/data.discount.perKg)
+        } else{
+            return data.amount * data.price
         }
-        return sum
     }
 
-
-
-    
     return (
         <div className = {styles.itemContainer}>
             <div className = {styles.itemImg}>
@@ -109,11 +101,11 @@ const ShopItem = (props) => {
             <div className = {styles.amountInfo}>
                 <div className = {styles.amountContainer}>
                     <button className = {styles.chooseAmountButton} onClick={() => handleChangeAmountValue(CONSTANTS.DECREASE)}>-</button>
-                    <input ref = {inputValue} onChange = {(changedValue) => setAmount(changedValue.target.value)}/>
+                    <input ref = {inputValue} value = {amount} onChange = {(changedValue) => setAmount(parseFloat(changedValue.target.value))}/>
                     <button className = {styles.chooseAmountButton} onClick={() => handleChangeAmountValue(CONSTANTS.INCREASE)}>+</button>
                 </div>
             </div>
-            <button className = {styles.buyButton} onClick = {() => buyItem(props.name, props.price,amount)}>Buy</button>
+            <button className = {styles.buyButton} onClick = {() => buyItem(props.name, props.price, amount, props.discount)}>Buy</button>
         </div>
     );
 };
